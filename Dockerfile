@@ -1,11 +1,9 @@
 FROM python
 RUN pip install --upgrade pip \
-    && pip install awscli aws-shell \
+    && pip install awscli \
     && apt-get update \
     && apt-get install -y groff jq less \
+    && apt-get install --no-install-recommends -y cron \
     && rm -rf /var/lib/apt/lists/*
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod a+x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["shell"]
+ENTRYPOINT ["/usr/sbin/cron", "-f"]
